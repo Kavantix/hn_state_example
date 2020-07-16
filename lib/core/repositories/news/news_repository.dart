@@ -16,42 +16,61 @@ class UngrowableUnmodifiableListView<T> extends UnmodifiableListView<T> {
   int get length => min(_length, super.length);
 }
 
+enum StoriesTypes {
+  newStories,
+  topStories,
+}
+
 class NewsRepository {
   NewsRepository(this._newsApi);
 
   final NewsApi _newsApi;
 
-  Queue<int> _newStoriesQueue;
-  final _newStoriesBacking = <NewsItem>[];
-  ValueNotifier<List<NewsItem>> _newStories;
-  ValueListenable<List<NewsItem>> get newStories {
-    if (_newStories == null) {
-      _newStories = ValueNotifier<List<NewsItem>>(null);
-      nextNewStoriesPage();
+  Queue<int> _storiesQueue;
+  final _storiesBacking = <NewsItem>[];
+
+  StoriesTypes _type;
+  ValueNotifier<List<NewsItem>> _stories;
+  ValueListenable<List<NewsItem>> stories(StoriesTypes type) {
+    assert(_type == null || type == _type);
+    _type = type;
+    if (_stories == null) {
+      switch (type) {
+        case StoriesTypes.newStories:
+          _apiCall = _newsApi.newStories;
+          break;
+        case StoriesTypes.topStories:
+          _apiCall = _newsApi.topStories;
+          break;
+      }
+      _stories = ValueNotifier<List<NewsItem>>(null);
+      nextStoriesPage();
     }
-    return _newStories;
+    return _stories;
   }
 
-  bool _loadingNewStories = false;
-  bool get hasNextNewStoriesPage => _newStoriesQueue.isNotEmpty;
-  void nextNewStoriesPage() async {
-    if (_loadingNewStories || !hasNextNewStoriesPage) return;
-    _loadingNewStories = true;
+  Future<List<int>> Function() _apiCall;
+
+  bool _loadingStories = false;
+  bool get hasNextStoriesPage => _storiesQueue.isNotEmpty;
+  void nextStoriesPage() async {
+    if (_loadingStories || !hasNextStoriesPage) return;
+    _loadingStories = true;
     try {
-      if (_newStoriesQueue == null) {
-        final ids = await _newsApi.newStories();
-        _newStoriesQueue = ListQueue<int>(ids.length);
-        _newStoriesQueue.addAll(ids);
+      if (_storiesQueue == null) {
+        final ids = await _apiCall();
+        _storiesQueue = ListQueue<int>(ids.length);
+        _storiesQueue.addAll(ids);
       }
       final ids = [
         for (int i = 0; i < 20; i++)
-          if (_newStoriesQueue.isNotEmpty) _newStoriesQueue.removeFirst()
+          if (_storiesQueue.isNotEmpty) _storiesQueue.removeFirst()
       ];
       final items = await Future.wait(ids.map(_newsApi.item));
-      _newStoriesBacking.addAll(items);
-      _newStories.value = UngrowableUnmodifiableListView(_newStoriesBacking);
+      _storiesBacking.addAll(items);
+      _stories.value = UngrowableUnmodifiableListView(_storiesBacking);
     } finally {
-      _loadingNewStories = false;
+      _loadingStories = false;
     }
   }
 }
