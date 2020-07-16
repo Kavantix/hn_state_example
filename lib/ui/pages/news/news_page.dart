@@ -7,7 +7,11 @@ import 'package:hn_state_example/ui/pages/news/components/news_list_tile.dart';
 import 'package:hn_state_example/ui/view.dart';
 
 class NewsPage extends StatelessWidget {
-  List<Widget> _section<T extends StoriesModel>(BuildContext context, T model) {
+  List<Widget> _section<T extends StoriesModel>(
+    BuildContext context,
+    T model, {
+    @required bool infinite,
+  }) {
     return [
       View<T>(
         cachedModel: model,
@@ -42,6 +46,9 @@ class NewsPage extends StatelessWidget {
           return SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
+                if (infinite && index > model.newsItems.length - 5) {
+                  model.nextPage();
+                }
                 if (index == model.newsItems.length) {
                   return SizedBox(
                     height: 64,
@@ -49,20 +56,10 @@ class NewsPage extends StatelessWidget {
                       child: ValueListenableBuilder<bool>(
                         valueListenable: model.loadingNextPage,
                         builder: (context, loading, _) {
-                          return AnimatedSwitcher(
-                            duration: Duration(milliseconds: 200),
-                            child: loading
-                                ? CircularProgressIndicator()
-                                : RaisedButton(
-                                    child: Text(
-                                      Strings.of(context).pages.news.nextPage,
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                    onPressed: () => model.nextPage(),
-                                    color: Colors.blue,
-                                  ),
+                          if (infinite && !loading) return SizedBox.shrink();
+                          return NextPageButton(
+                            loading: loading,
+                            nextPage: model.nextPage,
                           );
                         },
                       ),
@@ -97,8 +94,8 @@ class NewsPage extends StatelessWidget {
               CupertinoSliverRefreshControl(
                 onRefresh: () => model.load(),
               ),
-              ..._section(context, model.topStories),
-              ..._section(context, model.newStories),
+              ..._section(context, model.topStories, infinite: false),
+              ..._section(context, model.newStories, infinite: true),
               SliverToBoxAdapter(
                 child: SizedBox(height: MediaQuery.of(context).viewPadding.bottom),
               ),
@@ -106,6 +103,35 @@ class NewsPage extends StatelessWidget {
           );
         },
       ),
+    );
+  }
+}
+
+class NextPageButton extends StatelessWidget {
+  final bool loading;
+  final VoidCallback nextPage;
+
+  const NextPageButton({
+    Key key,
+    @required this.loading,
+    @required this.nextPage,
+  }) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedSwitcher(
+      duration: Duration(milliseconds: 200),
+      child: loading
+          ? CircularProgressIndicator()
+          : RaisedButton(
+              child: Text(
+                Strings.of(context).pages.news.nextPage,
+                style: TextStyle(
+                  color: Colors.white,
+                ),
+              ),
+              onPressed: () => nextPage(),
+              color: Colors.blue,
+            ),
     );
   }
 }
