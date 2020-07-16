@@ -20,12 +20,12 @@ class HackernewsApi implements NewsApi {
   @override
   Future<List<int>> newStories() async {
     final response = await _client.get('$host/newstories.json');
-    return jsonDecode(response.body) as List<int>;
+    return (jsonDecode(response.body) as List<dynamic>).cast<int>();
   }
 
   @override
   Future<List<int>> topStories() async {
     final response = await _client.get('$host/topstories.json');
-    return jsonDecode(response.body) as List<int>;
+    return (jsonDecode(response.body) as List<dynamic>).cast<int>();
   }
 }

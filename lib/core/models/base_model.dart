@@ -64,8 +64,3 @@ abstract class BaseModel extends ChangeNotifier implements Providable {
 
   void didChangeAppLifecycleState(AppLifecycleState state) {}
 }
-
-abstract class LoadingBaseModel extends BaseModel {
-  @override
-  bool _isLoading = true;
-}

@@ -34,6 +34,10 @@ class _PagesNews {
   const _PagesNews();
 
   String get title => Intl.message('Hacker News');
+  String get topStories => Intl.message('Top Stories');
+  String get newStories => Intl.message('New Stories');
+
+  String get nextPage => Intl.message('Next page');
 }
 
 class _Errors {

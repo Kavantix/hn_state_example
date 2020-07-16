@@ -27,7 +27,7 @@ class NewsRepository {
   final NewsApi _newsApi;
 
   Queue<int> _storiesQueue;
-  final _storiesBacking = <NewsItem>[];
+  var _storiesBacking = <NewsItem>[];
 
   StoriesTypes _type;
   ValueNotifier<List<NewsItem>> _stories;
@@ -44,6 +44,8 @@ class NewsRepository {
           break;
       }
       _stories = ValueNotifier<List<NewsItem>>(null);
+    }
+    if (_storiesQueue == null) {
       nextStoriesPage();
     }
     return _stories;
@@ -51,26 +53,35 @@ class NewsRepository {
 
   Future<List<int>> Function() _apiCall;
 
-  bool _loadingStories = false;
-  bool get hasNextStoriesPage => _storiesQueue.isNotEmpty;
-  void nextStoriesPage() async {
-    if (_loadingStories || !hasNextStoriesPage) return;
-    _loadingStories = true;
-    try {
-      if (_storiesQueue == null) {
-        final ids = await _apiCall();
-        _storiesQueue = ListQueue<int>(ids.length);
-        _storiesQueue.addAll(ids);
+  Future<void> _loadingStories;
+  Future<void> get loadingStories => _loadingStories;
+  bool get hasNextStoriesPage => _storiesQueue?.isNotEmpty ?? true;
+  Future<void> nextStoriesPage() async {
+    if (_loadingStories != null || !hasNextStoriesPage) return;
+    _loadingStories = () async {
+      try {
+        if (_storiesQueue == null) {
+          final ids = await _apiCall();
+          _storiesQueue = ListQueue<int>(ids.length);
+          _storiesQueue.addAll(ids);
+        }
+        final ids = [
+          for (int i = 0; i < 3; i++) if (_storiesQueue.isNotEmpty) _storiesQueue.removeFirst()
+        ];
+        final items = await Future.wait(ids.map(_newsApi.item));
+        _storiesBacking.addAll(items);
+        _stories.value = UngrowableUnmodifiableListView(_storiesBacking);
+      } finally {
+        _loadingStories = null;
       }
-      final ids = [
-        for (int i = 0; i < 20; i++)
-          if (_storiesQueue.isNotEmpty) _storiesQueue.removeFirst()
-      ];
-      final items = await Future.wait(ids.map(_newsApi.item));
-      _storiesBacking.addAll(items);
-      _stories.value = UngrowableUnmodifiableListView(_storiesBacking);
-    } finally {
-      _loadingStories = false;
-    }
+    }();
+    await _loadingStories;
+  }
+
+  Future<void> reset() async {
+    await _loadingStories;
+    _type = null;
+    _storiesQueue = null;
+    _storiesBacking = <NewsItem>[];
   }
 }
