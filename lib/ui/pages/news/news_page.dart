@@ -7,6 +7,8 @@ import 'package:hn_state_example/ui/pages/news/components/news_list_tile.dart';
 import 'package:hn_state_example/ui/view.dart';
 
 class NewsPage extends StatelessWidget {
+  const NewsPage({Key key}) : super(key: key);
+
   List<Widget> _section<T extends StoriesModel>(
     BuildContext context,
     T model, {
@@ -29,7 +31,7 @@ class NewsPage extends StatelessWidget {
               ),
               child: Text(
                 model.title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 28,
                 ),
@@ -56,7 +58,7 @@ class NewsPage extends StatelessWidget {
                       child: ValueListenableBuilder<bool>(
                         valueListenable: model.loadingNextPage,
                         builder: (context, loading, _) {
-                          if (infinite && !loading) return SizedBox.shrink();
+                          if (infinite && !loading) return const SizedBox.shrink();
                           return NextPageButton(
                             loading: loading,
                             nextPage: model.nextPage,
@@ -119,17 +121,17 @@ class NextPageButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSwitcher(
-      duration: Duration(milliseconds: 200),
+      duration: const Duration(milliseconds: 200),
       child: loading
-          ? CircularProgressIndicator()
+          ? const CircularProgressIndicator()
           : RaisedButton(
               child: Text(
                 Strings.of(context).pages.news.nextPage,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 ),
               ),
-              onPressed: () => nextPage(),
+              onPressed: nextPage,
               color: Colors.blue,
             ),
     );

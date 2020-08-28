@@ -6,7 +6,7 @@ import 'package:hn_state_example/core/data/news_item.dart';
 import 'package:hn_state_example/core/services/index.dart';
 
 class UngrowableUnmodifiableListView<T> extends UnmodifiableListView<T> {
-  int _length;
+  final int _length;
 
   UngrowableUnmodifiableListView(Iterable<T> source)
       : _length = source.length,
@@ -66,7 +66,8 @@ class NewsRepository {
           _storiesQueue.addAll(ids);
         }
         final ids = [
-          for (int i = 0; i < 3; i++) if (_storiesQueue.isNotEmpty) _storiesQueue.removeFirst()
+          for (int i = 0; i < 3; i++)
+            if (_storiesQueue.isNotEmpty) _storiesQueue.removeFirst()
         ];
         final items = await Future.wait(ids.map(_newsApi.item));
         _storiesBacking.addAll(items);

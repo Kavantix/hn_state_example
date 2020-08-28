@@ -5,6 +5,7 @@ class Likeable with ChangeNotifier implements ValueListenable<bool> {
   @override
   bool get value => _isLiked;
 
+  // ignore: avoid_positional_boolean_parameters
   Likeable(bool isLiked) : _isLiked = isLiked ?? false;
 
   void like() {

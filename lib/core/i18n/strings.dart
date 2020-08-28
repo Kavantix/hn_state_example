@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 
 class Strings {
-  static final StringsLocalizationsDelegate delegate = StringsLocalizationsDelegate();
+  static const StringsLocalizationsDelegate delegate = StringsLocalizationsDelegate();
   static Future<Strings> load(Locale locale) {
     final String name = locale.countryCode.isEmpty ? locale.languageCode : locale.toString();
     final String localeName = Intl.canonicalizedLocale(name);

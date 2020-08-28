@@ -1,4 +1,3 @@
-import 'package:hn_state_example/core/data/news_item.dart';
 import 'package:hn_state_example/core/providables/provided_strings.dart';
 import 'package:hn_state_example/core/repositories/index.dart';
 

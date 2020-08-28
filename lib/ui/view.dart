@@ -126,10 +126,10 @@ class _ViewState<Model extends BaseModel> extends State<View<Model>> with Widget
     _model.refreshProvided(context);
     return (widget.showLoader ?? false || widget.showError ?? false)
         ? AnimatedSwitcher(
-            duration: Duration(milliseconds: 330),
+            duration: const Duration(milliseconds: 330),
             child: _model.isLoading && (widget.showLoader ?? false)
                 ? widget.loaderBuilder?.call(context) ??
-                    Center(
+                    const Center(
                       child: CircularProgressIndicator(),
                     )
                 : _model.hasError && (widget.showError ?? false)
@@ -159,8 +159,8 @@ class ConnectionErrorIndicator extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           SizedBox(height: topPadding),
-          Icon(Icons.error),
-          SizedBox(height: 16),
+          const Icon(Icons.error),
+          const SizedBox(height: 16),
           Text(
             Strings.of(context).errors.failedLoading,
             textAlign: TextAlign.center,

@@ -4,6 +4,8 @@ import 'converters.dart';
 
 part 'news_item.g.dart';
 
+class Test {}
+
 enum NewsItemTypes {
   job,
   story,
