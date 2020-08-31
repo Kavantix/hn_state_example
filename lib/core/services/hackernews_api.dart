@@ -14,6 +14,7 @@ class HackernewsApi implements NewsApi {
   Future<NewsItem> item(int id) async {
     final response = await _client.get('$host/item/$id.json');
     final json = jsonDecode(response.body) as Map<String, dynamic>;
+    if (json == null) return null;
     return NewsItem.fromJson(json);
   }
 

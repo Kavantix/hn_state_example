@@ -70,7 +70,7 @@ class NewsRepository {
             if (_storiesQueue.isNotEmpty) _storiesQueue.removeFirst()
         ];
         final items = await Future.wait(ids.map(_newsApi.item));
-        _storiesBacking.addAll(items);
+        _storiesBacking.addAll(items.where((i) => i != null));
         _stories.value = UngrowableUnmodifiableListView(_storiesBacking);
       } finally {
         _loadingStories = null;

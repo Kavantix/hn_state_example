@@ -18,7 +18,7 @@ class NewsListTile extends StatelessWidget {
         return Column(
           children: <Widget>[
             ListTile(
-              title: Text(newsItem.title),
+              title: Text(newsItem.title ?? ''),
               subtitle: Text('Build nr: ${buildNumber++}'),
               trailing: ValueListenableBuilder<bool>(
                   valueListenable: model.likeable,
