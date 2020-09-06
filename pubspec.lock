@@ -396,11 +396,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "05b37a3"
-      resolved-ref: "05b37a3cb1a368a5ce3be1417a4885eaffe8fe33"
+      ref: "722306f"
+      resolved-ref: "722306f1ff8648dc09bdbeb900cb527bb5eb0f78"
       url: "https://github.com/Kavantix/sliver_tools.git"
     source: git
-    version: "0.0.1"
+    version: "0.1.1"
   source_gen:
     dependency: transitive
     description:

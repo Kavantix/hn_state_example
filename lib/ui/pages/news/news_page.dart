@@ -28,74 +28,111 @@ class NewsPage extends StatelessWidget {
               if (infinite && index > model.newsItems.length - 5) {
                 model.nextPage();
               }
-              if (index == model.newsItems.length) {
-                return SizedBox(
-                  height: 64,
-                  child: Center(
-                    child: ValueListenableBuilder<bool>(
-                      valueListenable: model.loadingNextPage,
-                      builder: (context, loading, _) {
-                        if (infinite && !loading) return const SizedBox.shrink();
-                        return NextPageButton(
-                          loading: loading,
-                          nextPage: model.nextPage,
-                        );
-                      },
-                    ),
-                  ),
-                );
-              }
               return NewsListTile(
-                newsItem: model.newsItems[index],
+                newsItem: index < model.newsItems.length ? model.newsItems[index] : null,
               );
             },
-            childCount: model.newsItems.length + (model.hasNextPage ? 1 : 0),
+            childCount: model.newsItems.length,
           ),
         );
         if (!infinite) {
           list = SliverAnimatedPaintExtent(
-            duration: const Duration(milliseconds: 200),
+            duration: const Duration(milliseconds: 300),
             curve: Curves.easeOut,
             child: list,
           );
         }
         return MultiSliver(
           pushPinnedChildren: true,
-          children: <Widget>[
+          children: [
             if (first)
               CupertinoSliverRefreshControl(
                 onRefresh: () => model.load(),
               ),
             SliverPersistantContainer(
-              minExtent: 69,
-              maxExtent: 69,
-              child: Container(
-                color: Colors.white,
-                child: Container(
-                  margin: const EdgeInsets.only(top: 16),
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                  decoration: BoxDecoration(
-                    border: Border(
-                      bottom: BorderSide(color: Colors.grey[300]),
+              minExtent: 24,
+              maxExtent: 24,
+              child: Container(),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.only(left: 16, right: 16),
+              sliver: SliverStack(
+                children: [
+                  SliverPositioned.fill(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        boxShadow: const <BoxShadow>[
+                          BoxShadow(
+                            offset: Offset(0, 4),
+                            blurRadius: 8,
+                            color: Colors.black26,
+                          )
+                        ],
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                     ),
                   ),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          model.title,
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontSize: 28,
+                  MultiSliver(
+                    // pushPinnedChildren: true,
+                    children: <Widget>[
+                      SliverPersistantContainer(
+                        minExtent: 69,
+                        maxExtent: 69,
+                        child: Container(
+                          child: Container(
+                            margin: const EdgeInsets.only(top: 16),
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(color: Colors.grey[300]),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Expanded(
+                                  child: Text(
+                                    model.title,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontSize: 28,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
+                        ),
+                      ),
+                      SliverClip(
+                        child: MultiSliver(
+                          children: <Widget>[
+                            list,
+                            SliverToBoxAdapter(
+                              child: SizedBox(
+                                height: 64,
+                                child: Center(
+                                  child: ValueListenableBuilder<bool>(
+                                    valueListenable: model.loadingNextPage,
+                                    builder: (context, loading, _) {
+                                      if (infinite && !loading) return const SizedBox.shrink();
+                                      return NextPageButton(
+                                        loading: loading,
+                                        nextPage: model.nextPage,
+                                      );
+                                    },
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
                   ),
-                ),
+                ],
               ),
             ),
-            list,
           ],
         );
       },

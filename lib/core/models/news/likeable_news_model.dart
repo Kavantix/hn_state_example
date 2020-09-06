@@ -15,6 +15,7 @@ class LikeableNewsModel extends BaseModel {
   Likeable get likeable => _likeable;
 
   void load(NewsItem newsItem) {
+    if (newsItem == null) return;
     _newsItem = _newsItem;
     _likeable = _repository.likeableFor(newsItem.id);
   }

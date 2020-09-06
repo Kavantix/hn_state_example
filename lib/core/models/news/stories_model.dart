@@ -18,6 +18,7 @@ abstract class StoriesModel extends BaseModel {
   ValueListenable<bool> get loadingNextPage => _loadingNextPage;
 
   void nextPage() async {
+    await null;
     if (loadingNextPage.value) return;
     _loadingNextPage.value = true;
     await _repository.nextStoriesPage();
