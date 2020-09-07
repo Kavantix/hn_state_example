@@ -20,6 +20,7 @@ class NewsListTile extends StatelessWidget {
             ListTile(
               title: Text(newsItem.title ?? ''),
               subtitle: Text('Build nr: ${buildNumber++}'),
+              contentPadding: const EdgeInsets.only(left: 16),
               trailing: ValueListenableBuilder<bool>(
                   valueListenable: model.likeable,
                   builder: (context, liked, _) {
