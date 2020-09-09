@@ -59,6 +59,7 @@ class NewsSection<T extends StoriesModel> extends StatelessWidget {
             SliverPadding(
               padding: const EdgeInsets.only(left: 16, right: 16),
               sliver: SliverStack(
+                insetOnOverlap: true,
                 children: [
                   SliverPositioned.fill(
                     child: _CardBackground(),
@@ -119,7 +120,7 @@ class _CardHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Container(
-        margin: const EdgeInsets.only(top: 16),
+        alignment: Alignment.bottomCenter,
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
           border: Border(

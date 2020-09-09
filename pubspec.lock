@@ -395,12 +395,10 @@ packages:
   sliver_tools:
     dependency: "direct main"
     description:
-      path: "."
-      ref: "722306f"
-      resolved-ref: "722306f1ff8648dc09bdbeb900cb527bb5eb0f78"
-      url: "https://github.com/Kavantix/sliver_tools.git"
-    source: git
-    version: "0.1.1"
+      name: sliver_tools
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.1.2+3"
   source_gen:
     dependency: transitive
     description:

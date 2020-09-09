@@ -30,11 +30,8 @@ dependencies:
   get_it: ^4.0.2
   json_serializable: 3.3.0
   http:
-  sliver_tools:
+  sliver_tools: ^0.1.2+3
     # path: ../sliver_tools
-    git:
-      url: https://github.com/Kavantix/sliver_tools.git
-      ref: 722306f
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
