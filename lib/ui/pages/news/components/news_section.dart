@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:hn_state_example/core/models/news/stories_model.dart';
 import 'package:hn_state_example/ui/components/next_page_button.dart';
@@ -56,9 +58,9 @@ class NewsSection<T extends StoriesModel> extends StatelessWidget {
           pushPinnedChildren: true,
           children: [
             _persistentPadding(24),
-            SliverPadding(
-              padding: const EdgeInsets.only(left: 16, right: 16),
-              sliver: SliverStack(
+            SliverCrossAxisConstrained(
+              maxCrossAxisExtent: min(700, MediaQuery.of(context).size.width - 32),
+              child: SliverStack(
                 insetOnOverlap: true,
                 children: [
                   SliverPositioned.fill(

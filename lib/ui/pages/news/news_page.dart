@@ -39,7 +39,8 @@ class NewsPage extends StatelessWidget {
                   infinite: true,
                 ),
                 SliverToBoxAdapter(
-                  child: SizedBox(height: MediaQuery.of(context).viewPadding.bottom),
+                  child: SizedBox(
+                      height: MediaQuery.of(context).viewPadding.bottom),
                 ),
               ],
             ),
