@@ -30,7 +30,7 @@ dependencies:
   get_it: ^4.0.2
   json_serializable: 3.3.0
   http:
-  sliver_tools: ^0.1.4
+  sliver_tools: ^0.1.4+1
   # sliver_tools:
   #   path: ../sliver_tools
 
