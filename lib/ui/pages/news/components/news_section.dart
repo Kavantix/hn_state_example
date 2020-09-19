@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:hn_state_example/core/models/news/stories_model.dart';
 import 'package:hn_state_example/ui/components/next_page_button.dart';
@@ -23,7 +21,7 @@ class NewsSection<T extends StoriesModel> extends StatelessWidget {
     Widget list = SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          if (infinite && index > model.newsItems.length - 5) {
+          if (infinite && index > model.newsItems.length - 10) {
             model.nextPage();
           }
           return NewsListTile(
@@ -41,11 +39,26 @@ class NewsSection<T extends StoriesModel> extends StatelessWidget {
     return list;
   }
 
-  Widget _persistentPadding(double height) => SliverPersistantContainer(
-        minExtent: height,
-        maxExtent: height,
-        child: Container(),
-      );
+  Widget _limitWidth(
+    BuildContext context, {
+    @required Widget child,
+    double padding = 0.0,
+  }) {
+    return SliverCrossAxisPadded(
+      paddingStart: MediaQuery.of(context).padding.left + padding,
+      paddingEnd: MediaQuery.of(context).padding.right + padding,
+      textDirection: TextDirection.ltr,
+      child: SliverCrossAxisConstrained(
+        maxCrossAxisExtent: 650,
+        child: MediaQuery.removePadding(
+          context: context,
+          removeLeft: true,
+          removeRight: true,
+          child: child,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,23 +67,24 @@ class NewsSection<T extends StoriesModel> extends StatelessWidget {
       showLoader: false,
       showError: false,
       builder: (context, model, _) {
-        return MultiSliver(
-          pushPinnedChildren: true,
-          children: [
-            _persistentPadding(24),
-            SliverCrossAxisConstrained(
-              maxCrossAxisExtent: min(700, MediaQuery.of(context).size.width - 32),
-              child: SliverStack(
+        return _limitWidth(
+          context,
+          padding: 24,
+          child: MultiSliver(
+            pushPinnedChildren: true,
+            children: [
+              SliverStack(
                 insetOnOverlap: true,
                 children: [
                   SliverPositioned.fill(
+                    top: _CardHeader.topInset,
                     child: _CardBackground(),
                   ),
                   MultiSliver(
                     children: <Widget>[
                       SliverPersistantContainer(
-                        minExtent: 69,
-                        maxExtent: 69,
+                        minExtent: _CardHeader.height,
+                        maxExtent: _CardHeader.height,
                         child: _CardHeader(
                           title: model.title,
                         ),
@@ -102,8 +116,8 @@ class NewsSection<T extends StoriesModel> extends StatelessWidget {
                   ),
                 ],
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );
@@ -113,6 +127,9 @@ class NewsSection<T extends StoriesModel> extends StatelessWidget {
 class _CardHeader extends StatelessWidget {
   final String title;
 
+  static const double topInset = 24;
+  static const double height = 69 + topInset;
+
   const _CardHeader({
     Key key,
     @required this.title,
@@ -121,27 +138,26 @@ class _CardHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      child: Container(
-        alignment: Alignment.bottomCenter,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(color: Colors.grey[300]),
-          ),
+      alignment: Alignment.bottomCenter,
+      margin: const EdgeInsets.only(top: topInset),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      decoration: BoxDecoration(
+        border: Border(
+          bottom: BorderSide(color: Colors.grey[300]),
         ),
-        child: Row(
-          children: [
-            Expanded(
-              child: Text(
-                title,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 28,
-                ),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Text(
+              title,
+              style: const TextStyle(
+                color: Colors.black,
+                fontSize: 28,
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

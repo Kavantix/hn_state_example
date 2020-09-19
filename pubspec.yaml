@@ -30,8 +30,9 @@ dependencies:
   get_it: ^4.0.2
   json_serializable: 3.3.0
   http:
-  sliver_tools: ^0.1.3
-    # path: ../sliver_tools
+  sliver_tools: ^0.1.4
+  # sliver_tools:
+  #   path: ../sliver_tools
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
