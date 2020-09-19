@@ -2,11 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hn_state_example/core/i18n/strings.dart';
 import 'package:hn_state_example/core/models/index.dart';
-import 'package:hn_state_example/core/models/news/stories_model.dart';
-import 'package:hn_state_example/ui/pages/news/components/news_list_tile.dart';
-import 'package:hn_state_example/ui/sliver_persistent_container.dart';
 import 'package:hn_state_example/ui/view.dart';
-import 'package:sliver_tools/sliver_tools.dart';
 
 import 'components/news_section.dart';
 
@@ -39,8 +35,7 @@ class NewsPage extends StatelessWidget {
                   infinite: true,
                 ),
                 SliverToBoxAdapter(
-                  child: SizedBox(
-                      height: MediaQuery.of(context).viewPadding.bottom),
+                  child: SizedBox(height: MediaQuery.of(context).viewPadding.bottom),
                 ),
               ],
             ),
