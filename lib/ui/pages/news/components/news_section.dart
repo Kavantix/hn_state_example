@@ -82,9 +82,7 @@ class NewsSection<T extends StoriesModel> extends StatelessWidget {
                   ),
                   MultiSliver(
                     children: <Widget>[
-                      SliverPersistantContainer(
-                        minExtent: _CardHeader.height,
-                        maxExtent: _CardHeader.height,
+                      SliverPinnedHeader(
                         child: _CardHeader(
                           title: model.title,
                         ),
@@ -128,7 +126,6 @@ class _CardHeader extends StatelessWidget {
   final String title;
 
   static const double topInset = 24;
-  static const double height = 69 + topInset;
 
   const _CardHeader({
     Key key,
@@ -137,27 +134,30 @@ class _CardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.bottomCenter,
-      margin: const EdgeInsets.only(top: topInset),
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-      decoration: BoxDecoration(
-        border: Border(
-          bottom: BorderSide(color: Colors.grey[300]),
+    return Padding(
+      padding: const EdgeInsets.only(top: 12),
+      child: Container(
+        alignment: Alignment.bottomCenter,
+        margin: const EdgeInsets.only(top: topInset),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          border: Border(
+            bottom: BorderSide(color: Colors.grey[300]),
+          ),
         ),
-      ),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              title,
-              style: const TextStyle(
-                color: Colors.black,
-                fontSize: 28,
+        child: Row(
+          children: [
+            Expanded(
+              child: Text(
+                title,
+                style: const TextStyle(
+                  color: Colors.black,
+                  fontSize: 28,
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
