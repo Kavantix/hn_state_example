@@ -25,7 +25,8 @@ class NewsSection<T extends StoriesModel> extends StatelessWidget {
             model.nextPage();
           }
           return NewsListTile(
-            newsItem: index < model.newsItems.length ? model.newsItems[index] : null,
+            newsItem:
+                index < model.newsItems.length ? model.newsItems[index] : null,
           );
         },
         childCount: model.newsItems.length,
@@ -91,20 +92,19 @@ class NewsSection<T extends StoriesModel> extends StatelessWidget {
                         child: MultiSliver(
                           children: <Widget>[
                             _list(),
-                            SliverToBoxAdapter(
-                              child: Container(
-                                height: 64,
-                                alignment: Alignment.center,
-                                child: ValueListenableBuilder<bool>(
-                                  valueListenable: model.loadingNextPage,
-                                  builder: (context, loading, _) {
-                                    if (infinite && !loading) return const SizedBox.shrink();
-                                    return NextPageButton(
-                                      loading: loading,
-                                      nextPage: model.nextPage,
-                                    );
-                                  },
-                                ),
+                            Container(
+                              height: 64,
+                              alignment: Alignment.center,
+                              child: ValueListenableBuilder<bool>(
+                                valueListenable: model.loadingNextPage,
+                                builder: (context, loading, _) {
+                                  if (infinite && !loading)
+                                    return const SizedBox.shrink();
+                                  return NextPageButton(
+                                    loading: loading,
+                                    nextPage: model.nextPage,
+                                  );
+                                },
                               ),
                             ),
                           ],
