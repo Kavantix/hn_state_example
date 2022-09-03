@@ -33,7 +33,8 @@ typedef CachedModelBuilder<Model> = Model Function(Model Function() newModel);
 class View<Model extends BaseModel> extends StatefulWidget {
   final Widget child;
 
-  final Widget Function(BuildContext context, Model value, Widget child) builder;
+  final Widget Function(BuildContext context, Model value, Widget child)
+      builder;
 
   final Widget Function(BuildContext context) loaderBuilder;
 
@@ -76,7 +77,8 @@ class View<Model extends BaseModel> extends StatefulWidget {
   _ViewState<Model> createState() => _ViewState<Model>();
 }
 
-class _ViewState<Model extends BaseModel> extends State<View<Model>> with WidgetsBindingObserver {
+class _ViewState<Model extends BaseModel> extends State<View<Model>>
+    with WidgetsBindingObserver {
   Model _model;
   var _isCachedModel = false;
 
@@ -97,8 +99,9 @@ class _ViewState<Model extends BaseModel> extends State<View<Model>> with Widget
       _model = _createModel();
     } else {
       _isCachedModel = true;
-      _model =
-          widget.cachedModel ?? widget.cachedModelBuilder?.call(_createModel) ?? _createModel();
+      _model = widget.cachedModel ??
+          widget.cachedModelBuilder?.call(_createModel) ??
+          _createModel();
     }
     if (_model.usesAppLifecycle) {
       WidgetsBinding.instance.addObserver(this);
@@ -165,7 +168,7 @@ class ConnectionErrorIndicator extends StatelessWidget {
             Strings.of(context).errors.failedLoading,
             textAlign: TextAlign.center,
           ),
-          RaisedButton(
+          ElevatedButton(
             onPressed: model.retryLoading,
             child: Text(Strings.of(context).errors.tryAgain),
           ),

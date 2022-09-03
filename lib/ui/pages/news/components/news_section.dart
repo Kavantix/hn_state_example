@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hn_state_example/core/models/news/stories_model.dart';
 import 'package:hn_state_example/ui/components/next_page_button.dart';
-import 'package:hn_state_example/ui/sliver_persistent_container.dart';
 import 'package:hn_state_example/ui/view.dart';
 import 'package:sliver_tools/sliver_tools.dart';
 

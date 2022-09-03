@@ -24,7 +24,7 @@ class NewsListTile extends StatelessWidget {
               trailing: ValueListenableBuilder<bool>(
                   valueListenable: model.likeable,
                   builder: (context, liked, _) {
-                    return FlatButton(
+                    return TextButton(
                       child: Icon(
                         liked ? Icons.favorite : Icons.favorite_border,
                         color: liked ? Colors.red : null,

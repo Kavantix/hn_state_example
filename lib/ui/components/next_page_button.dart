@@ -16,15 +16,15 @@ class NextPageButton extends StatelessWidget {
       duration: const Duration(milliseconds: 200),
       child: loading
           ? const CircularProgressIndicator()
-          : RaisedButton(
+          : ElevatedButton(
               child: Text(
                 Strings.of(context).pages.news.nextPage,
-                style: const TextStyle(
-                  color: Colors.white,
-                ),
+                style: const TextStyle(),
               ),
               onPressed: nextPage,
-              color: Colors.blue,
+              style: const ButtonStyle(
+                backgroundColor: MaterialStatePropertyAll(Colors.blue),
+              ),
             ),
     );
   }
